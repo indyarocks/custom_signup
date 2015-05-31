@@ -4,7 +4,7 @@ class Category < ActiveRecord::Base
   before_save :unique_category_for_user
 
   def self.user_categories_by_keyword(user, keyword)
-    user.categories.where("name LIKE ?", "%#{keyword}%").all
+    user.categories.where("LOWER(name) LIKE LOWER(?)", "%#{keyword}%").all
   end
 
     private
