@@ -36,7 +36,7 @@
 <script>
     $("#createCategoryFormId").on("ajax:success", function(e, data, status, xhr){
         alert(data.message);
-        window.location = window.location
+        location.reload();
     }).on("ajax:error", function(e, data, status, xhr){
         alert(data.message);
     })
