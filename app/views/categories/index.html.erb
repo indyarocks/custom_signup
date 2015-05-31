@@ -84,8 +84,12 @@
                             response(data)
                         }
                     })
-                }
+                },
+                select: function(event, ui) {
+                    var searchKeyword = ui.item.name
+                    $('#categorySearchBoxId').val(searchKeyword);
 
+                }
             }
     )
 
