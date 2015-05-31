@@ -14,6 +14,11 @@ class CategoriesController < ApplicationController
     end
   end
 
+  def autocompleter
+    categories = Category.user_categories_by_keyword(current_user, params[:keyword]).collect{|cat| cat.name}
+    render json: categories
+  end
+
   def show
     @category = current_user.categories.where(id: params[:id])
     if @category.blank?

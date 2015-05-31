@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   resources :users
   resources :categories do
     collection do
-      get :search
+      get :autocompleter
     end
   end
   # Example of regular route:

@@ -19,7 +19,7 @@
   <div>
     <p>
     <div class="input-group">
-      <input type='text' class="form-control" name="keyword" id='categorySearchBoxId' placeholder='Start typing category name here.' aria-describedby="sizing-addon1" >
+      <input type='text' class="form-control" name="keyword" id='categorySearchBoxId' placeholder='Start typing category name here.'>
       <span class="input-group-btn">
         <button class="btn btn-default" type="button" id="categorySearchBtnId" onclick='categorySearchFunction()'>Go!</button>
         <button class="btn btn-default" type="button" id="clearSearchBtnId" onclick='clearSearchFunction()'>Clear!</button>
@@ -71,4 +71,22 @@
                     $("#categoriesTableId").html(response.html)
                 })
     }
+
+    $('#categorySearchBoxId').autocomplete({
+                minLength: 2,
+                source: function(request, response){
+                    $.ajax({
+                        url: "<%= autocompleter_categories_path %>",
+                        data: {
+                            keyword: request.term
+                        },
+                        success: function(data){
+                            response(data)
+                        }
+                    })
+                }
+
+            }
+    )
+
 </script>
