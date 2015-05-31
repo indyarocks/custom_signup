@@ -56,6 +56,9 @@ class UsersController < ApplicationController
     # Confirms the correct user.
     def correct_user
       @user = User.find_by(id: params[:id])
-      redirect_to(root_url) unless current_user?(@user)
+      unless current_user?(@user)
+        flash[:danger] = "You do not have priviledge to take this action."
+        redirect_to(root_url)
+      end
     end
 end
