@@ -8,9 +8,9 @@ class CategoriesController < ApplicationController
       @categories = current_user.categories.all
     end
 
-    respond_to do |format|
-      format.html
-      format.json {render json: @categories.to_json}
+    if request.xhr?
+      html = render_to_string(:partial => 'categories/categories_listing', :layout => false, :locals => {categories: @categories})
+      render json: {success: true, html: html} and return
     end
   end
 

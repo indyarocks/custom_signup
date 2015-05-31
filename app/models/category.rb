@@ -1,7 +1,7 @@
 class Category < ActiveRecord::Base
   belongs_to :user
   validates :name, presence: true
-  validate :unique_category_for_user
+  before_save :unique_category_for_user
 
   def self.user_categories_by_keyword(user, keyword)
     user.categories.where("name LIKE ?", "%#{keyword}%").all

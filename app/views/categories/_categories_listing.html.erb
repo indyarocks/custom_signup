@@ -4,13 +4,15 @@
     <table class="table table-striped table-bordered">
       <thead>
       <tr>
+        <th>Sr. No.</th>
         <th>Category Name</th>
         <th>Created At</th>
       </tr>
       </thead>
       <tbody>
-      <% @categories.each do |category| %>
+      <% @categories.each_with_index do |category, i| %>
           <tr>
+            <td><%= i+1 %></td>
             <td>
               <div>
                 <%= category.name %>
@@ -63,5 +65,20 @@
                         })
             }
         }
+
+        $('.category_keyword').autocomplete({
+            minLength: 2,
+            delay: 600,
+            source: function(request, response) {
+                $.ajax({
+                    url: $('#category_keyword').data('autocomplete-source'),
+                    dataType: "json",
+                    data: {name: request.name},
+                    success: function( data ) {
+                        response( data );
+                    }
+                });
+            }
+        });
     </script>
 <% end %>
