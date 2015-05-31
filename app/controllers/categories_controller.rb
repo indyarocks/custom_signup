@@ -23,7 +23,12 @@ class CategoriesController < ApplicationController
   end
 
   def create
-
+    @category = current_user.categories.create(name: params[:name])
+    if @category.persisted?
+      render json: {success: true, message: 'Successfully created category'}
+    else
+      render json: {success: true, message: @category.errors.full_messages.join(',')}
+    end
   end
 
   def edit
@@ -31,6 +36,25 @@ class CategoriesController < ApplicationController
   end
 
   def update
+    category = current_user.categories.find_by(id: params[:id])
+    render json: {success: false, message: 'Invalid category'} and return if category.blank?
 
+    category.name = params[:name]
+    if category.save
+      render json: {success: true, message: 'Successfully updated category.'}
+    else
+      render json: {success: false, message: category.errors.full_messages.join(',')}
+    end
+  end
+
+  def destroy
+    category = current_user.categories.find_by(id: params[:id])
+    render json: {success: false, message: 'Invalid category'} and return if category.blank?
+
+    if category.destroy
+      render json: {success: true, message: 'Successfully deleted category.'}
+    else
+      render json: {success: false, message: category.errors.full_messages.join(',')}
+    end
   end
 end

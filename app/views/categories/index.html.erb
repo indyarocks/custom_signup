@@ -2,10 +2,20 @@
 <h1>User Categories</h1>
 <div class="container">
   <div class="row">
-    <div class="col-md-10" style="font-size: 2em;">Categories</div>
-    <div class="col-md-2 btn btn-default add_category_btn" id="addCategoryButtonId"><div class="glyphicon glyphicon-plus"></div>Add Category</div>
+    <div class="col-md-8" style="font-size: 2em;">Categories</div>
+    <div class="col-md-4 btn btn-default add_category_btn" >
+      <%= form_for :category, url: categories_path, html:{class: "form-inline", id: 'createCategoryFormId'}, method: :post, remote: true do %>
+        <div class="form-group">
+          <label class="sr-only" for="name">Category Name</label>
+          <div class="input-group">
+            <input type="text" class="form-control" name='name' id="newCategoryNameId" placeholder="Name">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary" id="addCategoryButtonId">Add Category</button>
+      <% end %>
+      </div>
   </div>
-  <%= form_for :category, url: categories_path, method: 'get', id: 'search_form', class: 'search' do |f| %>
+  <%= form_for :category, url: categories_path, method: 'get', id: 'search_form', class: 'search', remote: true do |f| %>
       <p>
         <%= f.text_field :keyword, data: {autocomplete_source: categories_path}, placeholder: 'Start typing category name here.' %>
         <%= f.submit "search", :class => 'button', :id => "categorySearchBtn" %>
@@ -18,11 +28,10 @@
 </div>
 
 <script>
-    $(document).ready(
-            function(){
-                $('#addCategoryButtonId').onclick(function(){
-
-                })
-            }
-    )
+    $("#createCategoryFormId").on("ajax:success", function(e, data, status, xhr){
+            alert(data.message);
+            window.location = window.location
+    }).on("ajax:error", function(e, data, status, xhr){
+        alert(data.message);
+    })
 </script>

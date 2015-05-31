@@ -7,5 +7,3 @@ jQuery ->
     minLength: 2
     source: $('#category_keyword').data('autocomplete-source')
 
-
-

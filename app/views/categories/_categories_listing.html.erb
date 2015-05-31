@@ -11,10 +11,57 @@
       <tbody>
       <% @categories.each do |category| %>
           <tr>
-            <td><%= category.name.humanize %></td>
-            <td><%= Date.strftime(category.created_at, '%d/%m/%Y %H:%M:%S' )%></td>
+            <td>
+              <div>
+                <%= category.name %>
+                <div style="float:right;">
+                  <span class="glyphicon glyphicon-edit" aria-hidden="true" id="editCategoryId" onclick="editCategory(<%= category.id %>)" style="cursor:pointer"></span>
+                  <span class="glyphicon glyphicon-trash" aria-hidden="true" id="deleteCategoryId" onclick="deleteCategory(<%= category.id %>)" style="cursor:pointer"></span>
+                </div>
+              </div>
+            </td>
+            <td><%= category.created_at.strftime('%d/%m/%Y %H:%M:%S')%></td>
           </tr>
       <% end %>
       </tbody>
     </table>
+    <script>
+
+        function deleteCategory(category_id){
+            var confirmation = confirm('Are you sure?');
+            if(!!confirmation){
+                $.ajax(
+                        {
+                            method: 'delete',
+                            url: '/categories/' + category_id
+                        }
+                ).success(function(response){
+                            alert(response.message);
+                            window.location = window.location
+                        })
+                        .error(function(response){
+                            alert(response.message);
+                        })
+            }
+        }
+
+        function editCategory(category_id) {
+            var newName = prompt('Please enter new name for this category.');
+            if (!!newName) {
+                $.ajax(
+                        {
+                            method: 'put',
+                            url: '/categories/' + category_id,
+                            data: {name: newName}
+                        }
+                ).success(function(response){
+                            alert(response.message);
+                            window.location = window.location
+                        })
+                        .error(function(response){
+                            alert(response.message);
+                        })
+            }
+        }
+    </script>
 <% end %>
