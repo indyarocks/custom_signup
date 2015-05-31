@@ -28,11 +28,17 @@ class CategoriesController < ApplicationController
   end
 
   def create
-    @category = current_user.categories.create(name: params[:name])
-    if @category.persisted?
+    begin
+      @category = current_user.categories.create!(name: params[:name])
+    rescue ActiveRecord::RecordNotUnique => ex
+      error = "Record Not Unique"
+    rescue Exception => ex
+      error = ex.message
+    end
+    if error.blank?
       render json: {success: true, message: 'Successfully created category'}
     else
-      render json: {success: true, message: @category.errors.full_messages.join(',')}
+      render json: {success: true, message: error}
     end
   end
 
@@ -45,10 +51,17 @@ class CategoriesController < ApplicationController
     render json: {success: false, message: 'Invalid category'} and return if category.blank?
 
     category.name = params[:name]
-    if category.save
+    begin
+      category.save!
+    rescue ActiveRecord::RecordNotUnique => ex
+      error = "Record Not Unique"
+    rescue Exception => ex
+      error = ex.message
+    end
+    if error.blank?
       render json: {success: true, message: 'Successfully updated category.'}
     else
-      render json: {success: false, message: category.errors.full_messages.join(',')}
+      render json: {success: false, message: error}
     end
   end
 
