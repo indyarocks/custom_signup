@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
-  def index
+  before_action :logged_in_user, only: [:edit, :update, :index, :show]
 
+  def index
+    @users = User.all.includes(:categories)
   end
 
   def new
@@ -8,8 +10,9 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(create_params)
+    @user = User.new(user_params)
     if @user.save
+      log_in @user
       flash[:success] = 'Signed up successfully.'
       redirect_to @user
     else
@@ -19,19 +22,39 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find_by(id: params[:id])
-    redirect_to '/', alert: 'User does not exist.' if @user.blank?
+    if @user.blank?
+      flash[:danger] ='User does not exist.'
+      redirect_to '/'
+    end
   end
 
   def edit
-
+    @user = User.find_by(id: params[:id])
+    if @user.blank?
+      flash[:danger] ='User does not exist.'
+      redirect_to '/'
+    end
   end
 
   def update
-
+    @user = User.find(params[:id])
+    if @user.update_attributes(user_params)
+      flash[:success] = "Profile updated"
+      redirect_to @user
+    else
+      render 'edit'
+    end
   end
 
   private
-    def create_params
+    def user_params
       params.require(:user).permit(:name, :email, :password, :password_confirmation)
+    end
+
+
+    # Confirms the correct user.
+    def correct_user
+      @user = User.find_by(id: params[:id])
+      redirect_to(root_url) unless current_user?(@user)
     end
 end

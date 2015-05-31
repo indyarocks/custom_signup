@@ -1,0 +1,25 @@
+<% provide(:title, 'User profile') %>
+<h1>User listing</h1>
+
+<div class="container">
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>User Id</th>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Categories Created</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @users.each do |user| %>
+      <tr>
+        <td><%= user.id %></td>
+        <td><%= user.name %></td>
+        <td><%= user.email %></td>
+        <td><%= user.categories.count %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+</div>

@@ -1,0 +1,20 @@
+<% if @categories.blank? %>
+    <p class="help-block">No categories found.</p>
+<% else %>
+    <table class="table table-striped table-bordered">
+      <thead>
+      <tr>
+        <th>Category Name</th>
+        <th>Created At</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @categories.each do |category| %>
+          <tr>
+            <td><%= category.name.humanize %></td>
+            <td><%= Date.strftime(category.created_at, '%d/%m/%Y %H:%M:%S' )%></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+<% end %>

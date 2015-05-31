@@ -1,0 +1,28 @@
+<% provide(:title, 'User Categories') %>
+<h1>User Categories</h1>
+<div class="container">
+  <div class="row">
+    <div class="col-md-10" style="font-size: 2em;">Categories</div>
+    <div class="col-md-2 btn btn-default add_category_btn" id="addCategoryButtonId"><div class="glyphicon glyphicon-plus"></div>Add Category</div>
+  </div>
+  <%= form_for :category, url: categories_path, method: 'get', id: 'search_form', class: 'search' do |f| %>
+      <p>
+        <%= f.text_field :keyword, data: {autocomplete_source: categories_path}, placeholder: 'Start typing category name here.' %>
+        <%= f.submit "search", :class => 'button', :id => "categorySearchBtn" %>
+      </p>
+  <% end %>
+
+  <div id="categoriesTableId">
+    <%= render partial: 'categories/categories_listing', locals: {categories: @categories} %>
+  </div>
+</div>
+
+<script>
+    $(document).ready(
+            function(){
+                $('#addCategoryButtonId').onclick(function(){
+
+                })
+            }
+    )
+</script>
